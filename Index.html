@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clock In / Clock Out (Local)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="titleblock">
+      <h1>Clock In / Clock Out</h1>
+      <p class="sub">Local-only timesheet (saves on this device)</p>
+    </div>
+
+    <div class="actions">
+      <button id="printBtn" class="btn">Print / Save</button>
+      <button id="exportBtn" class="btn">Export JSON</button>
+      <label class="btn filelabel">
+        Import JSON
+        <input id="importFile" type="file" accept="application/json" />
+      </label>
+      <button id="clearBtn" class="btn danger">Clear Device Data</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="entry-card">
+      <h2>Add Entry</h2>
+
+      <form id="entryForm" autocomplete="off">
+        <div class="grid">
+          <label>
+            Employee Name
+            <input id="employee" type="text" placeholder="e.g., Sam" required />
+          </label>
+
+          <label>
+            Day
+            <select id="day" required>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </label>
+
+          <label>
+            Time In
+            <input id="timeIn" type="time" required />
+          </label>
+
+          <label>
+            Time Out
+            <input id="timeOut" type="time" required />
+          </label>
+
+          <label class="note">
+            Notes (optional)
+            <input id="notes" type="text" placeholder="e.g., covered front desk" />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Add</button>
+          <button class="btn" type="button" id="quickNowIn">Set Time In = Now</button>
+          <button class="btn" type="button" id="quickNowOut">Set Time Out = Now</button>
+        </div>
+
+        <p class="tiny">
+          Tip: If someone works past midnight, enter the out time normally — the sheet will handle it.
+        </p>
+      </form>
+    </section>
+
+    <section class="totals">
+      <div class="totalbox">
+        <div class="label">Weekly Total</div>
+        <div class="value" id="weeklyTotal">0.00</div>
+        <div class="unit">hours</div>
+      </div>
+      <div class="totalbox subtle">
+        <div class="label">Saved To</div>
+        <div class="value" id="storageLabel">This device</div>
+        <div class="unit">localStorage</div>
+      </div>
+    </section>
+
+    <section id="daysContainer" class="days"></section>
+  </main>
+
+  <template id="dayTemplate">
+    <section class="day">
+      <header class="day-head">
+        <h3 class="day-title"></h3>
+        <div class="day-meta">
+          <span class="pill">Day Total: <strong class="day-total">0.00</strong> hrs</span>
+        </div>
+      </header>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Hours</th>
+              <th>Notes</th>
+              <th class="noprint">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </template>
+
+  <template id="rowTemplate">
+    <tr>
+      <td class="emp"></td>
+      <td class="tin"></td>
+      <td class="tout"></td>
+      <td class="hrs"></td>
+      <td class="nts"></td>
+      <td class="noprint">
+        <button class="btn small edit">Edit</button>
+        <button class="btn small danger del">Delete</button>
+      </td>
+    </tr>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
